@@ -1,4 +1,4 @@
-group 'dev.company.fptr10_service'
+group 'company.dev.fptr10_service'
 version '1.0'
 
 buildscript {

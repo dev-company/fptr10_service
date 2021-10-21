@@ -28,7 +28,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: dev.company.fptr10_service
+        package: company.dev.fptr10_service
         pluginClass: Fptr10ServicePlugin
 
   # To add assets to your plugin package, add an assets section, like this:

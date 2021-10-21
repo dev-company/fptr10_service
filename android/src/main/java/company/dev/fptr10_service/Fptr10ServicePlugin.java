@@ -1,4 +1,4 @@
-package dev.company.fptr10_service;
+package company.dev.fptr10_service;
 
 import androidx.annotation.NonNull;
 
@@ -18,7 +18,7 @@ public class Fptr10ServicePlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "fptr10_service");
+    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "company.dev/fptr10_service");
     channel.setMethodCallHandler(this);
   }
 

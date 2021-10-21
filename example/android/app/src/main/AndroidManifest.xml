@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.company.fptr10_service_example">
+    package="company.dev.fptr10_service_example">
    <application
         android:label="fptr10_service_example"
         android:icon="@mipmap/ic_launcher">
