@@ -16,6 +16,10 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+
+        flatDir {
+            dirs project(':fptr10_service').file('libs')
+        }
     }
 }
 
@@ -32,4 +36,8 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
+}
+
+dependencies {
+    implementation (name: 'libfptr10', ext: 'aar') 
 }
