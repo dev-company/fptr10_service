@@ -27,8 +27,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
+
     try {
       platformVersion =
           await Fptr10Service.driverVersion ?? 'Unknown platform version';
@@ -53,8 +52,29 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: ListView(
+          children: [
+            Text('Running on: $_platformVersion\n'),
+            TextButton.icon(
+              onPressed: () =>
+                  Fptr10Service.setupSettings('192.168.0.112', 5555),
+              icon: const Icon(Icons.settings),
+              label:
+                  const Text('Задать настройки подключения 192.168.0.112:5555'),
+            ),
+            IconButton(
+                onPressed: () => Fptr10Service.isOpened(),
+                icon: const Icon(Icons.open_in_new)),
+            IconButton(
+                onPressed: () => Fptr10Service.open(),
+                icon: const Icon(Icons.cell_wifi_outlined)),
+            IconButton(
+                onPressed: () => Fptr10Service.close(),
+                icon: const Icon(Icons.close)),
+            IconButton(
+                onPressed: () => Fptr10Service.settings,
+                icon: const Icon(Icons.print)),
+          ],
         ),
       ),
     );
