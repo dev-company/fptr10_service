@@ -8,6 +8,16 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
+/** ATOL */
+import android.content.Intent;
+import ru.atol.drivers10.service.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
+
 /** Fptr10ServicePlugin */
 public class Fptr10ServicePlugin implements FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
@@ -24,15 +34,20 @@ public class Fptr10ServicePlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else {
-      result.notImplemented();
+    switch (call.method) {
+      case "getDriverVersion":
+      result.success("ATOL ");
+        break;
+      default:
+        result.notImplemented();
+        break;
     }
   }
 
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+
     channel.setMethodCallHandler(null);
   }
+
 }
