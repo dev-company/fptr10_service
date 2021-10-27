@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:fptr10_service/data/elements/fptr_text_element.dart';
+import 'package:fptr10_service/data/status/fptr_status.dart';
 import 'package:fptr10_service/fptr10_service.dart';
+import 'package:fptr10_service/tasks/fptr_json_task.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,23 +24,20 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) => initPlatformState());
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String platformVersion;
 
     try {
       platformVersion =
-          await Fptr10Service.driverVersion ?? 'Unknown platform version';
+          await Fptr10Service.driverVersion ?? 'Unknown atol platform version';
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      platformVersion = 'Failed to get atol platform version.';
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
@@ -45,35 +45,78 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> setupDefaultFptrConnection() async {
+    WidgetsFlutterBinding.ensureInitialized();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('ATOL plugin example app'),
         ),
         body: ListView(
           children: [
             Text('Running on: $_platformVersion\n'),
             TextButton.icon(
-              onPressed: () =>
-                  Fptr10Service.setupSettings('192.168.0.112', 5555),
+              onPressed: () async {
+                await Fptr10Service.setupSettings('192.168.0.112', 5555);
+                await Fptr10Service.close();
+                await Fptr10Service.open();
+              },
               icon: const Icon(Icons.settings),
-              label:
-                  const Text('Задать настройки подключения 192.168.0.112:5555'),
+              label: const Text(
+                  'Задать настройки подключения 192.168.0.112:5555 и подключиться'),
             ),
-            IconButton(
-                onPressed: () => Fptr10Service.isOpened(),
-                icon: const Icon(Icons.open_in_new)),
-            IconButton(
-                onPressed: () => Fptr10Service.open(),
-                icon: const Icon(Icons.cell_wifi_outlined)),
-            IconButton(
-                onPressed: () => Fptr10Service.close(),
-                icon: const Icon(Icons.close)),
-            IconButton(
-                onPressed: () => Fptr10Service.settings,
-                icon: const Icon(Icons.print)),
+            TextButton.icon(
+                onPressed: () {
+                  Fptr10Service.statusChannel
+                      .receiveBroadcastStream()
+                      .listen((event) {
+                    FptrStatus status = FptrStatus.fromEvent(event);
+                    debugPrint('KKM status: ${status.toSimpleMap()}');
+                  });
+                },
+                icon: const Icon(Icons.play_arrow),
+                label: const Text('Начать опрашивать кассу о статусе')),
+            TextButton.icon(
+              onPressed: () => Fptr10Service.open(),
+              icon: const Icon(Icons.cell_wifi_outlined),
+              label: const Text('соединить'),
+            ),
+            TextButton.icon(
+              onPressed: () => Fptr10Service.close(),
+              icon: const Icon(Icons.cell_wifi_outlined),
+              label: const Text('Разъединить'),
+            ),
+            TextButton(
+                onPressed: () {
+                  Fptr10ServiceTasks.sendTask(FptrJsonTask.closeShift);
+                },
+                child: const Text('Закрыть смену')),
+            TextButton(
+                onPressed: () {
+                  Fptr10ServiceTasks.sendTask(FptrJsonTask.openShift);
+                },
+                child: const Text('Открыть смену')),
+            TextButton(
+                onPressed: () {
+                  Map<String, dynamic> task = {
+                    'type': 'nonFiscal',
+                    'items': [
+                      FptrTextElement(
+                              text: 'Строка 1', alignment: TextAlignment.left)
+                          .toMap(),
+                      FptrTextElement(text: 'Строка 2').toMap(),
+                      FptrTextElement(
+                              text: 'Строка 3', alignment: TextAlignment.right)
+                          .toMap(),
+                    ],
+                  };
+                  Fptr10ServiceTasks.sendTask(task);
+                },
+                child: const Text('Печать текста')),
           ],
         ),
       ),
