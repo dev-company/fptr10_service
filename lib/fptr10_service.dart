@@ -42,7 +42,9 @@ class Fptr10Service {
         'tcp_ip_port': port ?? 5555,
       });
       success = true;
-    } on PlatformException {}
+    } on PlatformException {
+      debugPrint('an error');
+    }
     return success;
   }
 
@@ -59,7 +61,7 @@ class Fptr10Service {
   }
 
   static dynamic _parseStatus(dynamic state) {
-    print(state.toString());
+    debugPrint(state.toString());
 
     return state.toString();
   }

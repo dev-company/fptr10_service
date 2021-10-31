@@ -1,4 +1,18 @@
+import 'package:fptr10_service/data/elements/fptr_barcode_element.dart';
+import 'package:fptr10_service/data/elements/fptr_fiscal_item_element.dart';
+import 'package:fptr10_service/data/elements/fptr_fiscal_payment_element.dart';
+import 'package:fptr10_service/data/elements/fptr_picture_mem_element.dart';
+import 'package:fptr10_service/data/elements/fptr_pixels_element.dart';
+import 'package:fptr10_service/data/elements/fptr_text_element.dart';
+import 'package:fptr10_service/utils/enum_utils.dart';
+
+import 'fptr_task_enums.dart';
+
 class FptrJsonTask {
+  // NOT_SUPPORTED: Регистрация/перерегистрация ККТ
+  // NOT_SUPPORTED: Закрытие ФН
+  // NOT_SUPPORTED: Запись настроек ККТ
+
   /// Открытие смены
   static final Map<String, dynamic> openShift = {'type': 'openShift'};
 
@@ -88,9 +102,80 @@ class FptrJsonTask {
     'type': 'getOverallTotals'
   };
 
+  /// Нефискальные документы
+  ///
+  /// [items] – массив элементов документа ([FptrTextElement], [FptrBarcodeElement], [FptrPictureMemElement])
+  ///
+  /// printFooter – печать подвала. По умолчанию – true.
+  static Map<String, dynamic> nonFiscal(
+      {required List<Object> items, printFooter = true}) {
+    return {
+      'type': 'nonFiscal',
+      'items': items.map((dynamic e) => e.toMap()).toList(),
+      'printFooter': printFooter,
+    };
+  }
+
   // TODO: Фискальные чеки
-  // TODO: Чеки коррекции
-  // TODO: Нефискальные документы
+  static Map<String, dynamic> fiscal({
+    required FptrFiscalType type,
+    bool ignoreNonFiscalPrintErrors = false,
+    bool electronically = false,
+    FptrTaxationType? taxationType,
+    String? paymentsPlace,
+    String? paymentsAddress,
+    String? machineNumber,
+    // TODO: FptrOperator operator,
+    // TODO: FptrClientInfo clientInfo,
+    // TODO: FptrCompanyInfo companyInfo,
+    // TODO: FptrAgentInfo agentInfo,
+    // TODO: FptrSupplierInfo supplierInfo,
+    // TODO: FptrOperationInfo operationInfo,
+    // TODO: FptrIndustryInfo industryInfo,
+    required List<FptrFiscalItemElement> items,
+    required List<FptrFiscalPaymentElement> payments,
+    // TODO: List<FptrFiscalTaxesElement> taxes,
+    double? total,
+    List<Object> preItems = const [],
+    List<Object> postItems = const [],
+    bool? validateMarkingCodes,
+  }) {
+    Map<String, dynamic> task = {
+      'type': EnumUtils.toShortString(type),
+      'ignoreNonFiscalPrintErrors': ignoreNonFiscalPrintErrors,
+      'electronically': electronically,
+      'items': items.map((FptrFiscalItemElement e) => e.toMap()).toList(),
+      'payments':
+          payments.map((FptrFiscalPaymentElement e) => e.toMap()).toList(),
+      // 'taxationType': EnumUtils.toShortString(taxationType),
+      'preItems': preItems.map((dynamic e) => e.toMap()).toList(),
+      'postItems': postItems.map((dynamic e) => e.toMap()).toList(),
+    };
+
+    if (taxationType != null) {
+      task['task'] = EnumUtils.toShortString(taxationType);
+    }
+
+    if (paymentsPlace != null) {
+      task['paymentsPlace'] = paymentsPlace;
+    }
+
+    if (paymentsAddress != null) {
+      task['paymentsAddress'] = paymentsAddress;
+    }
+
+    if (machineNumber != null) {
+      task['machineNumber'] = machineNumber;
+    }
+    if (total != null) {
+      task['total'] = total;
+    }
+    if (validateMarkingCodes != null) {
+      task['validateMarkingCodes'] = validateMarkingCodes;
+    }
+
+    return task;
+  }
   // TODO: Установка даты и времени
   // TODO: Начать проверку КМ
   // TODO: Получить результат проверки КМ
@@ -101,6 +186,7 @@ class FptrJsonTask {
   // TODO: Проверить состояние фоновой проверки
   // TODO: Проверка массива КМ
   // TODO: Добавление массива КМ в таблицу проверенных КМ
+  // TODO: Чеки коррекции
 
   /// Запрос состояния работы с КМ
   static final Map<String, dynamic> checkImcWorkState = {
@@ -122,8 +208,4 @@ class FptrJsonTask {
   static Map<String, dynamic> cashInOut(bool isCashIn, double sum) {
     return {'type': isCashIn ? 'cashIn' : 'cashOut', 'cashSum': sum};
   }
-
-  // NOT_SUPPORTED: Регистрация/перерегистрация ККТ
-  // NOT_SUPPORTED: Закрытие ФН
-  // NOT_SUPPORTED: Запись настроек ККТ
 }
