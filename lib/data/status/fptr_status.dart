@@ -54,6 +54,7 @@ extension FptrStatusExt on FptrStatus {
       'paperPresent': isPaperPresent,
       'fiscal': isFiscalDevice,
       'fnFiscal': isFiscalFN,
+      'fnPresent': isFNPresent,
       'cashDrawerOpened': isCashDrawerOpened,
     };
   }
@@ -62,4 +63,33 @@ extension FptrStatusExt on FptrStatus {
     const List<String> states = ['closed', 'opened', 'expired', 'unknown'];
     return states[shiftState];
   }
+
+  bool get isCloseRequired => shiftString == 'expired';
+  bool get isClosed => shiftString == 'closed';
+  bool get isOpened => shiftString == 'opened';
+
+  bool get isReadyToOpen =>
+      isClosed &&
+      !isDeviceBlocked &&
+      isPaperPresent &&
+      isFiscalDevice &&
+      isFiscalFN &&
+      isFNPresent;
+
+  bool get isReadyToClose =>
+      (isOpened || isCloseRequired) &&
+      !isDeviceBlocked &&
+      isPaperPresent &&
+      isFiscalDevice &&
+      isFiscalFN &&
+      isFNPresent;
+
+  /// we don't care about [coverOpened], because it doesn't work :)
+  bool get isReady =>
+      isOpened &&
+      !isDeviceBlocked &&
+      isPaperPresent &&
+      isFiscalDevice &&
+      isFiscalFN &&
+      isFNPresent;
 }

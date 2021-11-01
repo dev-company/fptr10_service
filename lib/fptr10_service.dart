@@ -34,18 +34,15 @@ class Fptr10Service {
     return settings;
   }
 
-  static Future<bool> setupSettings(String? ip, int? port) async {
-    bool success = false;
+  static Future<void> setupSettings(String ip, int? port) async {
     try {
       await channel.invokeMethod('setSettings', <String, dynamic>{
-        'tcp_ip_address': ip ?? '192.168.1.10',
+        'tcp_ip_address': ip,
         'tcp_ip_port': port ?? 5555,
       });
-      success = true;
     } on PlatformException {
       debugPrint('an error');
     }
-    return success;
   }
 
   // event
