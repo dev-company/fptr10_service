@@ -126,14 +126,14 @@ List<Widget> fiscalActions = [
       onPressed: () {
         Map<String, dynamic> task = FptrJsonTask.fiscal(
           type: FptrFiscalType.sell,
-          total: 73,
+          total: 146,
           items: [
             FptrFiscalItemElement(
               name: "Бананы",
               price: 73.15,
-              quantity: 1,
-              amount: 73.15,
-              infoDiscountAmount: 0.0,
+              quantity: 2,
+              amount: 146.3,
+              infoDiscountAmount: 10.0,
               measurementUnit: FptrMeasurementUnit.kilogram,
               paymentObject: FptrPaymentObject.commodity,
             ),
@@ -141,7 +141,7 @@ List<Widget> fiscalActions = [
           payments: [
             FptrFiscalPaymentElement(
               type: FptrPaymentType.cash,
-              sum: 73,
+              sum: 146,
             ),
           ],
         );
