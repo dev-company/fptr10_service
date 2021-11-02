@@ -94,8 +94,16 @@ List<Widget> connectionActions = [
   ),
   TextButton.icon(
     onPressed: () => Fptr10Service.close(),
-    icon: const Icon(Icons.cell_wifi_outlined),
+    icon: const Icon(Icons.signal_cellular_nodata_rounded),
     label: const Text('Разъединить'),
+  ),
+  TextButton.icon(
+    onPressed: () async {
+      FptrStatus status = await Fptr10Service.status;
+      debugPrint(status.toString());
+    },
+    icon: const Icon(Icons.info_outline),
+    label: const Text('Статус'),
   ),
   TextButton.icon(
       onPressed: () {

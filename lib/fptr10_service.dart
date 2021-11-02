@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'data/status/fptr_status.dart';
+
 class Fptr10Service {
   static const String CLOSE = 'close';
   static const String DRIVER_VERSION = 'getDriverVersion';
@@ -17,6 +19,11 @@ class Fptr10Service {
 
   static Future<String?> get driverVersion async =>
       await channel.invokeMethod('getDriverVersion');
+
+  static Future<FptrStatus> get status async => await channel
+      .invokeMethod('getStatus')
+      .then((value) => FptrStatus.fromEvent(Map<String, dynamic>.from(value)));
+
   static Future<bool> close() async => await channel
       .invokeMethod<bool>(CLOSE)
       .then<bool>((bool? value) => value ?? false);
