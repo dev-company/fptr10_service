@@ -82,4 +82,13 @@ class Fptr10ServiceTasks extends Fptr10Service {
 
     debugPrint(result);
   }
+
+  static Future<String> sendTaskWithResponse(Map<String, dynamic> task) async {
+    final String taskString = json.encode(task).toString();
+
+    String result = await Fptr10Service.channel
+        .invokeMethod(PERFORM_JSON, {'task': taskString});
+
+    return result;
+  }
 }
