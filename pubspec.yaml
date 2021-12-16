@@ -1,6 +1,6 @@
 name: fptr10_service
 description: ATOL support for flutter
-version: 0.0.4
+version: 0.1.0
 homepage:
 
 environment:

@@ -1,12 +1,25 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'data/status/fptr_status.dart';
+
+class Fptr10Exception implements Exception {
+  /// Creates a new fptr10 exception with the given error code and description.
+  Fptr10Exception(this.code, this.description);
+
+  /// Error code.
+  String code;
+
+  /// Textual description of the error.
+  String? description;
+
+  @override
+  String toString() => 'Fptr10Exception($code, $description)';
+}
 
 class Fptr10Service {
   static const String CLOSE = 'close';
@@ -47,8 +60,8 @@ class Fptr10Service {
         'tcp_ip_address': ip,
         'tcp_ip_port': port ?? 5555,
       });
-    } on PlatformException {
-      debugPrint('an error');
+    } on PlatformException catch (e) {
+      throw Fptr10Exception(e.code, e.message);
     }
   }
 
@@ -68,27 +81,5 @@ class Fptr10Service {
     debugPrint(state.toString());
 
     return state.toString();
-  }
-}
-
-class Fptr10ServiceTasks extends Fptr10Service {
-  static const String PERFORM_JSON = 'performJson';
-
-  static Future<void> sendTask(Map<String, dynamic> task) async {
-    final String taskString = json.encode(task).toString();
-
-    String result = await Fptr10Service.channel
-        .invokeMethod(PERFORM_JSON, {'task': taskString});
-
-    debugPrint(result);
-  }
-
-  static Future<String> sendTaskWithResponse(Map<String, dynamic> task) async {
-    final String taskString = json.encode(task).toString();
-
-    String result = await Fptr10Service.channel
-        .invokeMethod(PERFORM_JSON, {'task': taskString});
-
-    return result;
   }
 }

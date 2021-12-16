@@ -1,9 +1,7 @@
-import 'dart:convert' as convert;
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:fptr10_service/data/elements/fptr_text_element.dart';
 import 'package:fptr10_service/data/elements/fptr_barcode_element.dart';
 import 'package:fptr10_service/data/elements/fptr_pixels_element.dart';
@@ -12,7 +10,9 @@ import 'package:fptr10_service/data/elements/fptr_fiscal_payment_element.dart';
 import 'package:fptr10_service/data/elements/fptr_picture_mem_element.dart';
 import 'package:fptr10_service/data/elements/fptr_element_enums.dart';
 import 'package:fptr10_service/data/status/fptr_status.dart';
+
 import 'package:fptr10_service/fptr10_service.dart';
+import 'package:fptr10_service/fptr10_service_tasks.dart';
 import 'package:fptr10_service/tasks/fptr_json_task.dart';
 import 'package:fptr10_service/tasks/fptr_task_enums.dart';
 
@@ -79,13 +79,13 @@ class _MyAppState extends State<MyApp> {
 List<Widget> connectionActions = [
   TextButton.icon(
     onPressed: () async {
-      await Fptr10Service.setupSettings('192.168.1.39', 5555);
+      await Fptr10Service.setupSettings('192.168.2.123', 5555);
       await Fptr10Service.close();
       await Fptr10Service.open();
     },
     icon: const Icon(Icons.settings),
     label: const Text(
-        'Задать настройки подключения 192.168.1.39:5555 и подключиться'),
+        'Задать настройки подключения 192.168.2.123:5555 и подключиться'),
   ),
   TextButton.icon(
     onPressed: () => Fptr10Service.open(),
@@ -131,31 +131,34 @@ List<Widget> shiftActions = [
 
 List<Widget> fiscalActions = [
   TextButton(
-      onPressed: () {
-        Map<String, dynamic> task = FptrJsonTask.fiscal(
-          type: FptrFiscalType.sell,
-          total: 146,
-          items: [
-            FptrFiscalItemElement(
-              name: "Бананы",
-              price: 73.15,
-              quantity: 2,
-              amount: 146.3,
-              infoDiscountAmount: 10.0,
-              measurementUnit: FptrMeasurementUnit.kilogram,
-              paymentObject: FptrPaymentObject.commodity,
-            ),
-          ],
-          payments: [
-            FptrFiscalPaymentElement(
-              type: FptrPaymentType.cash,
-              sum: 146,
-            ),
-          ],
-        );
-        Fptr10ServiceTasks.sendTask(task);
-      },
-      child: const Text('Чек покупки (прихода)')),
+    onPressed: () {
+      Map<String, dynamic> task = FptrJsonTask.fiscal(
+        type: FptrFiscalType.sell,
+        total: 146,
+        items: [
+          FptrFiscalItemElement(
+            name: "Бананы",
+            price: 73.15,
+            quantity: 2,
+            amount: 146.3,
+            infoDiscountAmount: 10.0,
+            measurementUnit: FptrMeasurementUnit.kilogram,
+            paymentObject: FptrPaymentObject.commodity,
+          ),
+        ],
+        payments: [
+          FptrFiscalPaymentElement(
+            type: FptrPaymentType.cash,
+            sum: 146,
+          ),
+        ],
+      );
+      dynamic result = Fptr10ServiceTasks.sendTaskWithParsedResponse(task);
+
+      debugPrint(result.toString());
+    },
+    child: const Text('Чек покупки (прихода)'),
+  ),
   TextButton(
       onPressed: () {
         Map<String, dynamic> task = FptrJsonTask.fiscal(
@@ -179,7 +182,7 @@ List<Widget> fiscalActions = [
             ),
           ],
         );
-        Fptr10ServiceTasks.sendTask(task);
+        Fptr10ServiceTasks.sendTaskWithResponse(task);
       },
       child: const Text('Чек возврата (прихода)')),
 ];
