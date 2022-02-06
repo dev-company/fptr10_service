@@ -1,6 +1,6 @@
 name: fptr10_service
 description: ATOL support for flutter
-version: 0.1.0
+version: 0.1.1
 homepage:
 
 environment:
@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  freezed: ^0.14.5
-  freezed_annotation: ^0.14.3
-  json_serializable: ^5.0.2
+  freezed: ^1.1.1
+  freezed_annotation: ^1.1.0
+  json_serializable: ^6.1.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
