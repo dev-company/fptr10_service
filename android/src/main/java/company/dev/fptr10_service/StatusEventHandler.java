@@ -12,12 +12,14 @@ import ru.atol.drivers10.fptr.IFptr;
 public class StatusEventHandler implements EventChannel.StreamHandler{
 
     final private IFptr fptr;
+    final private long delayMillis;
     private final Handler handler = new Handler();
     EventChannel.EventSink eventSink;
 
 
-    public StatusEventHandler(Context context, IFptr fptr) {
+    public StatusEventHandler(Context context, IFptr fptr, long delayMillis) {
         this.fptr=fptr;
+        this.delayMillis = delayMillis;
     }
 
 
@@ -25,7 +27,7 @@ public class StatusEventHandler implements EventChannel.StreamHandler{
         @Override
         public void run() {
             eventSink.success(fptrStatusMap());
-            handler.postDelayed(this, 1000);
+            handler.postDelayed(this, delayMillis);
         }
     };
 

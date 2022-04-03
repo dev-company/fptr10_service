@@ -79,13 +79,13 @@ class _MyAppState extends State<MyApp> {
 List<Widget> connectionActions = [
   TextButton.icon(
     onPressed: () async {
-      await Fptr10Service.setupSettings('192.168.2.123', 5555);
+      await Fptr10Service.setupSettings('192.168.2.2', 5555);
       await Fptr10Service.close();
       await Fptr10Service.open();
     },
     icon: const Icon(Icons.settings),
     label: const Text(
-        'Задать настройки подключения 192.168.2.123:5555 и подключиться'),
+        'Задать настройки подключения 192.168.2.2:5555 и подключиться'),
   ),
   TextButton.icon(
     onPressed: () => Fptr10Service.open(),

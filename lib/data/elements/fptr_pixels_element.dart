@@ -10,7 +10,9 @@ class FptrPixelsElement {
   final int scale;
   final FptrElementAlignment alignment;
 
-  /// Массив пикселей [pixels]. Каждый байт кодирует один пиксель (0 - белый, другие значения - черный). Затем массив кодируется в base64
+  /// Массив пикселей [pixels].
+  /// Каждый байт кодирует один пиксель (0 - белый, другие значения - черный).
+  /// Затем массив кодируется в base64
   FptrPixelsElement({
     required this.pixels,
     required this.width,

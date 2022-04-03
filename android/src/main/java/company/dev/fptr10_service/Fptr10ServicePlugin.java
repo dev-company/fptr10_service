@@ -21,6 +21,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import ru.atol.drivers10.fptr.Fptr;
 import ru.atol.drivers10.fptr.IFptr;
 
+
 /** Fptr10ServicePlugin */
 public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
   private Context applicationContext;
@@ -46,7 +47,7 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
     methodChannel = new MethodChannel(messenger, "company.dev/fptr10_service");
     statusEventChannel = new EventChannel(messenger, "company.dev/fptr10_events/status");
 
-    statusEventChannel.setStreamHandler(new StatusEventHandler(applicationContext, fptr));
+    statusEventChannel.setStreamHandler(new StatusEventHandler(applicationContext, fptr, 3000));
     methodChannel.setMethodCallHandler(this);
 
   }
@@ -55,9 +56,14 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
 
     switch (call.method) {
-
-      case "validateJson":
-        onValidateJson(call, result);
+      case "getDriverVersion":
+        onGetDriverVersion(call, result);
+        break;
+      case "getSettings":
+        result.success(fptr.getSettings());
+        break;
+      case "getStatus":
+        onGetStatus(call, result);
         break;
       case "performJson":
         onPerformJson(call, result);
@@ -65,14 +71,8 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
       case "setSettings":
         onSetSettings(call, result);
         break;
-      case "getStatus":
-        onGetStatus(call, result);
-        break;
-      case "getSettings":
-        result.success(fptr.getSettings());
-        break;
-      case "getDriverVersion":
-        onGetDriverVersion(call, result);
+      case "validateJson":
+        onValidateJson(call, result);
         break;
       case "isOpened":
         result.success(fptr.isOpened());
@@ -115,7 +115,8 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
   }
 
   private  void onSetSettings(MethodCall call, Result result) {
-    String settings = String.format("{\"%s\": %d, \"%s\": %d, \"%s\": \"%s\", \"%s\": \"%s\", \"%s\": %d}",
+    String settings;
+    settings = String.format("{\"%s\": %d, \"%s\": %d, \"%s\": \"%s\", \"%s\": \"%s\", \"%s\": %d}",
             IFptr.LIBFPTR_SETTING_MODEL, IFptr.LIBFPTR_MODEL_ATOL_AUTO,
             IFptr.LIBFPTR_SETTING_PORT, IFptr.LIBFPTR_PORT_TCPIP,
             IFptr.LIBFPTR_SETTING_COM_FILE, "COM5",

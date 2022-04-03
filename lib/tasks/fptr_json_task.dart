@@ -2,7 +2,6 @@ import 'package:fptr10_service/data/elements/fptr_barcode_element.dart';
 import 'package:fptr10_service/data/elements/fptr_fiscal_item_element.dart';
 import 'package:fptr10_service/data/elements/fptr_fiscal_payment_element.dart';
 import 'package:fptr10_service/data/elements/fptr_picture_mem_element.dart';
-import 'package:fptr10_service/data/elements/fptr_pixels_element.dart';
 import 'package:fptr10_service/data/elements/fptr_text_element.dart';
 import 'package:fptr10_service/utils/enum_utils.dart';
 
