@@ -105,15 +105,15 @@ List<Widget> connectionActions = [
     icon: const Icon(Icons.info_outline),
     label: const Text('Статус'),
   ),
-  TextButton.icon(
-      onPressed: () {
-        Fptr10Service.statusChannel.receiveBroadcastStream().listen((event) {
-          FptrStatus status = FptrStatus.fromEvent(event);
-          debugPrint('KKM status: ${status.toSimpleMap()}');
-        });
-      },
-      icon: const Icon(Icons.play_arrow),
-      label: const Text('Начать опрашивать кассу о статусе')),
+  // TextButton.icon(
+  //     onPressed: () {
+  //       Fptr10Service.statusChannel.receiveBroadcastStream().listen((event) {
+  //         FptrStatus status = FptrStatus.fromEvent(event);
+  //         debugPrint('KKM status: ${status.toSimpleMap()}');
+  //       });
+  //     },
+  //     icon: const Icon(Icons.play_arrow),
+  //     label: const Text('Начать опрашивать кассу о статусе')),
 ];
 
 List<Widget> shiftActions = [

@@ -47,7 +47,7 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
     methodChannel = new MethodChannel(messenger, "company.dev/fptr10_service");
     statusEventChannel = new EventChannel(messenger, "company.dev/fptr10_events/status");
 
-    statusEventChannel.setStreamHandler(new StatusEventHandler(applicationContext, fptr, 3000));
+    // statusEventChannel.setStreamHandler(new StatusEventHandler(applicationContext, fptr, 3000));
     methodChannel.setMethodCallHandler(this);
 
   }
@@ -251,7 +251,7 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
     applicationContext = null;
     methodChannel.setMethodCallHandler(null);
     methodChannel = null;
-    statusEventChannel.setStreamHandler(null);
+    // statusEventChannel.setStreamHandler(null);
     statusEventChannel = null;
     fptr.destroy();
   }
