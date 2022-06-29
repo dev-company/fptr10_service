@@ -28,23 +28,25 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final TextEditingController ipcontroller =
+      TextEditingController(text: '192.168.1.2');
   String _platformVersion = 'Unknown';
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) => initPlatformState());
+    WidgetsBinding.instance.addPostFrameCallback((_) => initPlatformState());
   }
 
   Future<void> initPlatformState() async {
     String platformVersion;
 
     try {
-      platformVersion =
-          await Fptr10Service.driverVersion ?? 'Unknown atol platform version';
+      platformVersion = await Fptr10Service.driverVersion ??
+          'Неизвестная версия драйвера АТОЛ';
     } on PlatformException {
-      platformVersion = 'Failed to get atol platform version.';
+      platformVersion = 'Не удалось загрузить версию платформы.';
     }
 
     if (!mounted) return;
@@ -66,201 +68,192 @@ class _MyAppState extends State<MyApp> {
           title: Text('Example app. ATOL: $_platformVersion\n'),
         ),
         body: ListView(
-          children: exampleActions,
+          children: [
+            TextFormField(controller: ipcontroller),
+            // connection
+            TextButton.icon(
+              onPressed: () async {
+                await Fptr10Service.setupSettings(ipcontroller.text, 5555);
+                await Fptr10Service.close();
+                await Fptr10Service.open();
+              },
+              icon: const Icon(Icons.settings),
+              label: const Text('Применить настройки и подключиться'),
+            ),
+            TextButton.icon(
+              onPressed: () => Fptr10Service.open(),
+              icon: const Icon(Icons.cell_wifi_outlined),
+              label: const Text('Соединить'),
+            ),
+            TextButton.icon(
+              onPressed: () => Fptr10Service.close(),
+              icon: const Icon(Icons.signal_cellular_nodata_rounded),
+              label: const Text('Разъединить'),
+            ),
+            TextButton.icon(
+              onPressed: () async {
+                FptrStatus status = await Fptr10Service.status;
+                debugPrint(status.toString());
+              },
+              icon: const Icon(Icons.info_outline),
+              label: const Text('Статус'),
+            ),
+            // shift actions
+            TextButton(
+                onPressed: () {
+                  Fptr10ServiceTasks.sendTask(FptrJsonTask.closeShift);
+                },
+                child: const Text('Закрыть смену')),
+            TextButton(
+                onPressed: () {
+                  Fptr10ServiceTasks.sendTask(FptrJsonTask.openShift);
+                },
+                child: const Text('Открыть смену')),
+            // fiscal actions
+            TextButton(
+              onPressed: () {
+                Map<String, dynamic> task = FptrJsonTask.fiscal(
+                  type: FptrFiscalType.sell,
+                  total: 146,
+                  items: [
+                    FptrFiscalItemElement(
+                      name: "Бананы",
+                      price: 73.15,
+                      quantity: 2,
+                      amount: 146.3,
+                      infoDiscountAmount: 10.0,
+                      measurementUnit: FptrMeasurementUnit.kilogram,
+                      paymentObject: FptrPaymentObject.commodity,
+                    ),
+                  ],
+                  payments: [
+                    FptrFiscalPaymentElement(
+                      type: FptrPaymentType.cash,
+                      sum: 146,
+                    ),
+                  ],
+                );
+                dynamic result =
+                    Fptr10ServiceTasks.sendTaskWithParsedResponse(task);
+
+                debugPrint(result.toString());
+              },
+              child: const Text('Чек покупки (прихода)'),
+            ),
+            TextButton(
+                onPressed: () {
+                  Map<String, dynamic> task = FptrJsonTask.fiscal(
+                    type: FptrFiscalType.sellReturn,
+                    total: 73,
+                    items: [
+                      FptrFiscalItemElement(
+                        name: "Бананы",
+                        price: 73.15,
+                        quantity: 1,
+                        amount: 73.15,
+                        infoDiscountAmount: 0.0,
+                        measurementUnit: FptrMeasurementUnit.kilogram,
+                        paymentObject: FptrPaymentObject.commodity,
+                      ),
+                    ],
+                    payments: [
+                      FptrFiscalPaymentElement(
+                        type: FptrPaymentType.cash,
+                        sum: 73,
+                      ),
+                    ],
+                  );
+                  Fptr10ServiceTasks.sendTaskWithResponse(task);
+                },
+                child: const Text('Чек возврата (прихода)')),
+
+            // nonfiscal actions
+            TextButton(
+                onPressed: () {
+                  Map<String, dynamic> task = FptrJsonTask.nonFiscal(
+                    items: [
+                      FptrTextElement(
+                          text: 'Строка 1',
+                          alignment: FptrElementAlignment.left),
+                      FptrTextElement(text: 'Строка 2'),
+                      FptrTextElement(
+                          text: 'Строка 3',
+                          alignment: FptrElementAlignment.right),
+                    ],
+                  );
+                  Fptr10ServiceTasks.sendTask(task);
+                },
+                child: const Text('Печать текста')),
+            TextButton(
+                onPressed: () {
+                  Map<String, dynamic> task = FptrJsonTask.nonFiscal(
+                    items: [
+                      FptrBarcodeElement(
+                        barcode: '[01]98898765432106[3202]012345[15]991231',
+                        barcodeType: FptrBarcodeType.GS1_128,
+                        scale: 1,
+                      )
+                    ],
+                  );
+                  Fptr10ServiceTasks.sendTask(task);
+                },
+                child: const Text('Печать GS1_128')),
+            TextButton(
+                onPressed: () {
+                  Map<String, dynamic> task = FptrJsonTask.nonFiscal(
+                    items: [
+                      FptrBarcodeElement(
+                        barcode:
+                            'https://check.egais.ru?id=cf1b1096-3cbc-11e7-b3c1-9b018b2ba3f7',
+                        barcodeType: FptrBarcodeType.QR,
+                        scale: 4,
+                        alignment: FptrElementAlignment.left,
+                      ),
+                      FptrTextElement(
+                          text: 'Строка 1',
+                          alignment: FptrElementAlignment.left),
+                      FptrTextElement(text: 'Строка 2'),
+                      FptrTextElement(
+                          text: 'Строка 3',
+                          alignment: FptrElementAlignment.right),
+                    ],
+                  );
+                  Fptr10ServiceTasks.sendTask(task);
+                },
+                child: const Text('Печать QR')),
+            TextButton(
+                onPressed: () {
+                  Map<String, dynamic> task = FptrJsonTask.nonFiscal(
+                    items: [
+                      FptrPixelsElement(
+                        pixels: '/////////wAAAAD//wAAAAD/////////',
+                        width: 6,
+                        scale: 1000,
+                      )
+                    ],
+                  );
+                  Fptr10ServiceTasks.sendTask(task);
+                },
+                child: const Text('Печать пикселей')),
+            TextButton(
+                onPressed: () {
+                  Map<String, dynamic> task = FptrJsonTask.nonFiscal(
+                    items: [
+                      FptrPictureMemElement(
+                        pictureNumber: 1,
+                      )
+                    ],
+                  );
+                  Fptr10ServiceTasks.sendTask(task);
+                },
+                child: const Text('Печать из памяти')),
+          ],
         ),
       ),
     );
   }
 
-  List<Widget> exampleActions =
-      connectionActions + shiftActions + fiscalActions + nonFiscalActions;
+  List<Widget> exampleActions = nonFiscalActions;
 }
 
-List<Widget> connectionActions = [
-  TextButton.icon(
-    onPressed: () async {
-      await Fptr10Service.setupSettings('192.168.2.2', 5555);
-      await Fptr10Service.close();
-      await Fptr10Service.open();
-    },
-    icon: const Icon(Icons.settings),
-    label: const Text(
-        'Задать настройки подключения 192.168.2.2:5555 и подключиться'),
-  ),
-  TextButton.icon(
-    onPressed: () => Fptr10Service.open(),
-    icon: const Icon(Icons.cell_wifi_outlined),
-    label: const Text('Соединить'),
-  ),
-  TextButton.icon(
-    onPressed: () => Fptr10Service.close(),
-    icon: const Icon(Icons.signal_cellular_nodata_rounded),
-    label: const Text('Разъединить'),
-  ),
-  TextButton.icon(
-    onPressed: () async {
-      FptrStatus status = await Fptr10Service.status;
-      debugPrint(status.toString());
-    },
-    icon: const Icon(Icons.info_outline),
-    label: const Text('Статус'),
-  ),
-  // TextButton.icon(
-  //     onPressed: () {
-  //       Fptr10Service.statusChannel.receiveBroadcastStream().listen((event) {
-  //         FptrStatus status = FptrStatus.fromEvent(event);
-  //         debugPrint('KKM status: ${status.toSimpleMap()}');
-  //       });
-  //     },
-  //     icon: const Icon(Icons.play_arrow),
-  //     label: const Text('Начать опрашивать кассу о статусе')),
-];
-
-List<Widget> shiftActions = [
-  TextButton(
-      onPressed: () {
-        Fptr10ServiceTasks.sendTask(FptrJsonTask.closeShift);
-      },
-      child: const Text('Закрыть смену')),
-  TextButton(
-      onPressed: () {
-        Fptr10ServiceTasks.sendTask(FptrJsonTask.openShift);
-      },
-      child: const Text('Открыть смену')),
-];
-
-List<Widget> fiscalActions = [
-  TextButton(
-    onPressed: () {
-      Map<String, dynamic> task = FptrJsonTask.fiscal(
-        type: FptrFiscalType.sell,
-        total: 146,
-        items: [
-          FptrFiscalItemElement(
-            name: "Бананы",
-            price: 73.15,
-            quantity: 2,
-            amount: 146.3,
-            infoDiscountAmount: 10.0,
-            measurementUnit: FptrMeasurementUnit.kilogram,
-            paymentObject: FptrPaymentObject.commodity,
-          ),
-        ],
-        payments: [
-          FptrFiscalPaymentElement(
-            type: FptrPaymentType.cash,
-            sum: 146,
-          ),
-        ],
-      );
-      dynamic result = Fptr10ServiceTasks.sendTaskWithParsedResponse(task);
-
-      debugPrint(result.toString());
-    },
-    child: const Text('Чек покупки (прихода)'),
-  ),
-  TextButton(
-      onPressed: () {
-        Map<String, dynamic> task = FptrJsonTask.fiscal(
-          type: FptrFiscalType.sellReturn,
-          total: 73,
-          items: [
-            FptrFiscalItemElement(
-              name: "Бананы",
-              price: 73.15,
-              quantity: 1,
-              amount: 73.15,
-              infoDiscountAmount: 0.0,
-              measurementUnit: FptrMeasurementUnit.kilogram,
-              paymentObject: FptrPaymentObject.commodity,
-            ),
-          ],
-          payments: [
-            FptrFiscalPaymentElement(
-              type: FptrPaymentType.cash,
-              sum: 73,
-            ),
-          ],
-        );
-        Fptr10ServiceTasks.sendTaskWithResponse(task);
-      },
-      child: const Text('Чек возврата (прихода)')),
-];
-
-List<Widget> nonFiscalActions = [
-  TextButton(
-      onPressed: () {
-        Map<String, dynamic> task = FptrJsonTask.nonFiscal(
-          items: [
-            FptrTextElement(
-                text: 'Строка 1', alignment: FptrElementAlignment.left),
-            FptrTextElement(text: 'Строка 2'),
-            FptrTextElement(
-                text: 'Строка 3', alignment: FptrElementAlignment.right),
-          ],
-        );
-        Fptr10ServiceTasks.sendTask(task);
-      },
-      child: const Text('Печать текста')),
-  TextButton(
-      onPressed: () {
-        Map<String, dynamic> task = FptrJsonTask.nonFiscal(
-          items: [
-            FptrBarcodeElement(
-              barcode: '[01]98898765432106[3202]012345[15]991231',
-              barcodeType: FptrBarcodeType.GS1_128,
-              scale: 1,
-            )
-          ],
-        );
-        Fptr10ServiceTasks.sendTask(task);
-      },
-      child: const Text('Печать GS1_128')),
-  TextButton(
-      onPressed: () {
-        Map<String, dynamic> task = FptrJsonTask.nonFiscal(
-          items: [
-            FptrBarcodeElement(
-              barcode:
-                  'https://check.egais.ru?id=cf1b1096-3cbc-11e7-b3c1-9b018b2ba3f7',
-              barcodeType: FptrBarcodeType.QR,
-              scale: 4,
-              alignment: FptrElementAlignment.left,
-            ),
-            FptrTextElement(
-                text: 'Строка 1', alignment: FptrElementAlignment.left),
-            FptrTextElement(text: 'Строка 2'),
-            FptrTextElement(
-                text: 'Строка 3', alignment: FptrElementAlignment.right),
-          ],
-        );
-        Fptr10ServiceTasks.sendTask(task);
-      },
-      child: const Text('Печать QR')),
-  TextButton(
-      onPressed: () {
-        Map<String, dynamic> task = FptrJsonTask.nonFiscal(
-          items: [
-            FptrPixelsElement(
-              pixels: '/////////wAAAAD//wAAAAD/////////',
-              width: 6,
-              scale: 1000,
-            )
-          ],
-        );
-        Fptr10ServiceTasks.sendTask(task);
-      },
-      child: const Text('Печать пикселей')),
-  TextButton(
-      onPressed: () {
-        Map<String, dynamic> task = FptrJsonTask.nonFiscal(
-          items: [
-            FptrPictureMemElement(
-              pictureNumber: 1,
-            )
-          ],
-        );
-        Fptr10ServiceTasks.sendTask(task);
-      },
-      child: const Text('Печать из памяти')),
-];
+List<Widget> nonFiscalActions = [];
