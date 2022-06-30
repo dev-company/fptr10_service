@@ -1,6 +1,6 @@
 name: fptr10_service
 description: unofficial ATOL plugin based on 10.9.3.1
-version: 0.3.0
+version: 0.3.1
 homepage: https://github.com/dev-company/fptr10_service
 
 environment:
@@ -10,13 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  freezed: "1.1.0"
-  freezed_annotation: "1.1.0"
+  freezed_annotation: ^2.0.0
   json_serializable: ^6.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  freezed: ^2.0.0
   build_runner:
 
 flutter:

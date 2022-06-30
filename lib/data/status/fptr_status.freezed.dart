@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'fptr_status.dart';
@@ -11,82 +12,11 @@ part of 'fptr_status.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 FptrStatus _$FptrStatusFromJson(Map<String, dynamic> json) {
   return _FptrStatus.fromJson(json);
 }
-
-/// @nodoc
-class _$FptrStatusTearOff {
-  const _$FptrStatusTearOff();
-
-  _FptrStatus call(
-      {required int operatorID,
-      required int logicalNumber,
-      int shiftState = 3,
-      required String modelName,
-      required int mode,
-      required int submode,
-      required int receiptNumber,
-      required int documentNumber,
-      required int shiftNumber,
-      required int receiptType,
-      required int documentType,
-      required int lineLength,
-      required int lineLengthPix,
-      required double receiptSum,
-      required bool isFiscalDevice,
-      required bool isFiscalFN,
-      required bool isFNPresent,
-      required bool isInvalidFN,
-      required bool isCashDrawerOpened,
-      required bool isPaperPresent,
-      required bool isPaperNearEnd,
-      required bool isCoverOpened,
-      required bool isPrinterConnectionLost,
-      required bool isPrinterError,
-      required bool isCutError,
-      required bool isPrinterOverheat,
-      required bool isDeviceBlocked}) {
-    return _FptrStatus(
-      operatorID: operatorID,
-      logicalNumber: logicalNumber,
-      shiftState: shiftState,
-      modelName: modelName,
-      mode: mode,
-      submode: submode,
-      receiptNumber: receiptNumber,
-      documentNumber: documentNumber,
-      shiftNumber: shiftNumber,
-      receiptType: receiptType,
-      documentType: documentType,
-      lineLength: lineLength,
-      lineLengthPix: lineLengthPix,
-      receiptSum: receiptSum,
-      isFiscalDevice: isFiscalDevice,
-      isFiscalFN: isFiscalFN,
-      isFNPresent: isFNPresent,
-      isInvalidFN: isInvalidFN,
-      isCashDrawerOpened: isCashDrawerOpened,
-      isPaperPresent: isPaperPresent,
-      isPaperNearEnd: isPaperNearEnd,
-      isCoverOpened: isCoverOpened,
-      isPrinterConnectionLost: isPrinterConnectionLost,
-      isPrinterError: isPrinterError,
-      isCutError: isCutError,
-      isPrinterOverheat: isPrinterOverheat,
-      isDeviceBlocked: isDeviceBlocked,
-    );
-  }
-
-  FptrStatus fromJson(Map<String, Object> json) {
-    return FptrStatus.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $FptrStatus = _$FptrStatusTearOff();
 
 /// @nodoc
 mixin _$FptrStatus {
@@ -311,10 +241,11 @@ class _$FptrStatusCopyWithImpl<$Res> implements $FptrStatusCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$FptrStatusCopyWith<$Res> implements $FptrStatusCopyWith<$Res> {
-  factory _$FptrStatusCopyWith(
-          _FptrStatus value, $Res Function(_FptrStatus) then) =
-      __$FptrStatusCopyWithImpl<$Res>;
+abstract class _$$_FptrStatusCopyWith<$Res>
+    implements $FptrStatusCopyWith<$Res> {
+  factory _$$_FptrStatusCopyWith(
+          _$_FptrStatus value, $Res Function(_$_FptrStatus) then) =
+      __$$_FptrStatusCopyWithImpl<$Res>;
   @override
   $Res call(
       {int operatorID,
@@ -347,14 +278,14 @@ abstract class _$FptrStatusCopyWith<$Res> implements $FptrStatusCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$FptrStatusCopyWithImpl<$Res> extends _$FptrStatusCopyWithImpl<$Res>
-    implements _$FptrStatusCopyWith<$Res> {
-  __$FptrStatusCopyWithImpl(
-      _FptrStatus _value, $Res Function(_FptrStatus) _then)
-      : super(_value, (v) => _then(v as _FptrStatus));
+class __$$_FptrStatusCopyWithImpl<$Res> extends _$FptrStatusCopyWithImpl<$Res>
+    implements _$$_FptrStatusCopyWith<$Res> {
+  __$$_FptrStatusCopyWithImpl(
+      _$_FptrStatus _value, $Res Function(_$_FptrStatus) _then)
+      : super(_value, (v) => _then(v as _$_FptrStatus));
 
   @override
-  _FptrStatus get _value => super._value as _FptrStatus;
+  _$_FptrStatus get _value => super._value as _$_FptrStatus;
 
   @override
   $Res call({
@@ -386,7 +317,7 @@ class __$FptrStatusCopyWithImpl<$Res> extends _$FptrStatusCopyWithImpl<$Res>
     Object? isPrinterOverheat = freezed,
     Object? isDeviceBlocked = freezed,
   }) {
-    return _then(_FptrStatus(
+    return _then(_$_FptrStatus(
       operatorID: operatorID == freezed
           ? _value.operatorID
           : operatorID // ignore: cast_nullable_to_non_nullable
@@ -538,8 +469,8 @@ class _$_FptrStatus implements _FptrStatus {
   final int operatorID;
   @override
   final int logicalNumber;
-  @JsonKey(defaultValue: 3)
   @override
+  @JsonKey()
   final int shiftState;
   @override
   final String modelName;
@@ -598,114 +529,98 @@ class _$_FptrStatus implements _FptrStatus {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FptrStatus &&
-            (identical(other.operatorID, operatorID) ||
-                const DeepCollectionEquality()
-                    .equals(other.operatorID, operatorID)) &&
-            (identical(other.logicalNumber, logicalNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.logicalNumber, logicalNumber)) &&
-            (identical(other.shiftState, shiftState) ||
-                const DeepCollectionEquality()
-                    .equals(other.shiftState, shiftState)) &&
-            (identical(other.modelName, modelName) ||
-                const DeepCollectionEquality()
-                    .equals(other.modelName, modelName)) &&
-            (identical(other.mode, mode) ||
-                const DeepCollectionEquality().equals(other.mode, mode)) &&
-            (identical(other.submode, submode) ||
-                const DeepCollectionEquality()
-                    .equals(other.submode, submode)) &&
-            (identical(other.receiptNumber, receiptNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.receiptNumber, receiptNumber)) &&
-            (identical(other.documentNumber, documentNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.documentNumber, documentNumber)) &&
-            (identical(other.shiftNumber, shiftNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.shiftNumber, shiftNumber)) &&
-            (identical(other.receiptType, receiptType) ||
-                const DeepCollectionEquality()
-                    .equals(other.receiptType, receiptType)) &&
-            (identical(other.documentType, documentType) ||
-                const DeepCollectionEquality()
-                    .equals(other.documentType, documentType)) &&
-            (identical(other.lineLength, lineLength) ||
-                const DeepCollectionEquality()
-                    .equals(other.lineLength, lineLength)) &&
-            (identical(other.lineLengthPix, lineLengthPix) ||
-                const DeepCollectionEquality()
-                    .equals(other.lineLengthPix, lineLengthPix)) &&
-            (identical(other.receiptSum, receiptSum) ||
-                const DeepCollectionEquality()
-                    .equals(other.receiptSum, receiptSum)) &&
-            (identical(other.isFiscalDevice, isFiscalDevice) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFiscalDevice, isFiscalDevice)) &&
-            (identical(other.isFiscalFN, isFiscalFN) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFiscalFN, isFiscalFN)) &&
-            (identical(other.isFNPresent, isFNPresent) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFNPresent, isFNPresent)) &&
-            (identical(other.isInvalidFN, isInvalidFN) ||
-                const DeepCollectionEquality()
-                    .equals(other.isInvalidFN, isInvalidFN)) &&
-            (identical(other.isCashDrawerOpened, isCashDrawerOpened) ||
-                const DeepCollectionEquality()
-                    .equals(other.isCashDrawerOpened, isCashDrawerOpened)) &&
-            (identical(other.isPaperPresent, isPaperPresent) ||
-                const DeepCollectionEquality()
-                    .equals(other.isPaperPresent, isPaperPresent)) &&
-            (identical(other.isPaperNearEnd, isPaperNearEnd) ||
-                const DeepCollectionEquality()
-                    .equals(other.isPaperNearEnd, isPaperNearEnd)) &&
-            (identical(other.isCoverOpened, isCoverOpened) ||
-                const DeepCollectionEquality()
-                    .equals(other.isCoverOpened, isCoverOpened)) &&
-            (identical(other.isPrinterConnectionLost, isPrinterConnectionLost) || const DeepCollectionEquality().equals(other.isPrinterConnectionLost, isPrinterConnectionLost)) &&
-            (identical(other.isPrinterError, isPrinterError) || const DeepCollectionEquality().equals(other.isPrinterError, isPrinterError)) &&
-            (identical(other.isCutError, isCutError) || const DeepCollectionEquality().equals(other.isCutError, isCutError)) &&
-            (identical(other.isPrinterOverheat, isPrinterOverheat) || const DeepCollectionEquality().equals(other.isPrinterOverheat, isPrinterOverheat)) &&
-            (identical(other.isDeviceBlocked, isDeviceBlocked) || const DeepCollectionEquality().equals(other.isDeviceBlocked, isDeviceBlocked)));
+        (other.runtimeType == runtimeType &&
+            other is _$_FptrStatus &&
+            const DeepCollectionEquality()
+                .equals(other.operatorID, operatorID) &&
+            const DeepCollectionEquality()
+                .equals(other.logicalNumber, logicalNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.shiftState, shiftState) &&
+            const DeepCollectionEquality().equals(other.modelName, modelName) &&
+            const DeepCollectionEquality().equals(other.mode, mode) &&
+            const DeepCollectionEquality().equals(other.submode, submode) &&
+            const DeepCollectionEquality()
+                .equals(other.receiptNumber, receiptNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.documentNumber, documentNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.shiftNumber, shiftNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.receiptType, receiptType) &&
+            const DeepCollectionEquality()
+                .equals(other.documentType, documentType) &&
+            const DeepCollectionEquality()
+                .equals(other.lineLength, lineLength) &&
+            const DeepCollectionEquality()
+                .equals(other.lineLengthPix, lineLengthPix) &&
+            const DeepCollectionEquality()
+                .equals(other.receiptSum, receiptSum) &&
+            const DeepCollectionEquality()
+                .equals(other.isFiscalDevice, isFiscalDevice) &&
+            const DeepCollectionEquality()
+                .equals(other.isFiscalFN, isFiscalFN) &&
+            const DeepCollectionEquality()
+                .equals(other.isFNPresent, isFNPresent) &&
+            const DeepCollectionEquality()
+                .equals(other.isInvalidFN, isInvalidFN) &&
+            const DeepCollectionEquality()
+                .equals(other.isCashDrawerOpened, isCashDrawerOpened) &&
+            const DeepCollectionEquality()
+                .equals(other.isPaperPresent, isPaperPresent) &&
+            const DeepCollectionEquality()
+                .equals(other.isPaperNearEnd, isPaperNearEnd) &&
+            const DeepCollectionEquality()
+                .equals(other.isCoverOpened, isCoverOpened) &&
+            const DeepCollectionEquality().equals(
+                other.isPrinterConnectionLost, isPrinterConnectionLost) &&
+            const DeepCollectionEquality()
+                .equals(other.isPrinterError, isPrinterError) &&
+            const DeepCollectionEquality()
+                .equals(other.isCutError, isCutError) &&
+            const DeepCollectionEquality()
+                .equals(other.isPrinterOverheat, isPrinterOverheat) &&
+            const DeepCollectionEquality()
+                .equals(other.isDeviceBlocked, isDeviceBlocked));
   }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(operatorID) ^
-      const DeepCollectionEquality().hash(logicalNumber) ^
-      const DeepCollectionEquality().hash(shiftState) ^
-      const DeepCollectionEquality().hash(modelName) ^
-      const DeepCollectionEquality().hash(mode) ^
-      const DeepCollectionEquality().hash(submode) ^
-      const DeepCollectionEquality().hash(receiptNumber) ^
-      const DeepCollectionEquality().hash(documentNumber) ^
-      const DeepCollectionEquality().hash(shiftNumber) ^
-      const DeepCollectionEquality().hash(receiptType) ^
-      const DeepCollectionEquality().hash(documentType) ^
-      const DeepCollectionEquality().hash(lineLength) ^
-      const DeepCollectionEquality().hash(lineLengthPix) ^
-      const DeepCollectionEquality().hash(receiptSum) ^
-      const DeepCollectionEquality().hash(isFiscalDevice) ^
-      const DeepCollectionEquality().hash(isFiscalFN) ^
-      const DeepCollectionEquality().hash(isFNPresent) ^
-      const DeepCollectionEquality().hash(isInvalidFN) ^
-      const DeepCollectionEquality().hash(isCashDrawerOpened) ^
-      const DeepCollectionEquality().hash(isPaperPresent) ^
-      const DeepCollectionEquality().hash(isPaperNearEnd) ^
-      const DeepCollectionEquality().hash(isCoverOpened) ^
-      const DeepCollectionEquality().hash(isPrinterConnectionLost) ^
-      const DeepCollectionEquality().hash(isPrinterError) ^
-      const DeepCollectionEquality().hash(isCutError) ^
-      const DeepCollectionEquality().hash(isPrinterOverheat) ^
-      const DeepCollectionEquality().hash(isDeviceBlocked);
 
   @JsonKey(ignore: true)
   @override
-  _$FptrStatusCopyWith<_FptrStatus> get copyWith =>
-      __$FptrStatusCopyWithImpl<_FptrStatus>(this, _$identity);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(operatorID),
+        const DeepCollectionEquality().hash(logicalNumber),
+        const DeepCollectionEquality().hash(shiftState),
+        const DeepCollectionEquality().hash(modelName),
+        const DeepCollectionEquality().hash(mode),
+        const DeepCollectionEquality().hash(submode),
+        const DeepCollectionEquality().hash(receiptNumber),
+        const DeepCollectionEquality().hash(documentNumber),
+        const DeepCollectionEquality().hash(shiftNumber),
+        const DeepCollectionEquality().hash(receiptType),
+        const DeepCollectionEquality().hash(documentType),
+        const DeepCollectionEquality().hash(lineLength),
+        const DeepCollectionEquality().hash(lineLengthPix),
+        const DeepCollectionEquality().hash(receiptSum),
+        const DeepCollectionEquality().hash(isFiscalDevice),
+        const DeepCollectionEquality().hash(isFiscalFN),
+        const DeepCollectionEquality().hash(isFNPresent),
+        const DeepCollectionEquality().hash(isInvalidFN),
+        const DeepCollectionEquality().hash(isCashDrawerOpened),
+        const DeepCollectionEquality().hash(isPaperPresent),
+        const DeepCollectionEquality().hash(isPaperNearEnd),
+        const DeepCollectionEquality().hash(isCoverOpened),
+        const DeepCollectionEquality().hash(isPrinterConnectionLost),
+        const DeepCollectionEquality().hash(isPrinterError),
+        const DeepCollectionEquality().hash(isCutError),
+        const DeepCollectionEquality().hash(isPrinterOverheat),
+        const DeepCollectionEquality().hash(isDeviceBlocked)
+      ]);
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_FptrStatusCopyWith<_$_FptrStatus> get copyWith =>
+      __$$_FptrStatusCopyWithImpl<_$_FptrStatus>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -715,33 +630,33 @@ class _$_FptrStatus implements _FptrStatus {
 
 abstract class _FptrStatus implements FptrStatus {
   factory _FptrStatus(
-      {required int operatorID,
-      required int logicalNumber,
-      int shiftState,
-      required String modelName,
-      required int mode,
-      required int submode,
-      required int receiptNumber,
-      required int documentNumber,
-      required int shiftNumber,
-      required int receiptType,
-      required int documentType,
-      required int lineLength,
-      required int lineLengthPix,
-      required double receiptSum,
-      required bool isFiscalDevice,
-      required bool isFiscalFN,
-      required bool isFNPresent,
-      required bool isInvalidFN,
-      required bool isCashDrawerOpened,
-      required bool isPaperPresent,
-      required bool isPaperNearEnd,
-      required bool isCoverOpened,
-      required bool isPrinterConnectionLost,
-      required bool isPrinterError,
-      required bool isCutError,
-      required bool isPrinterOverheat,
-      required bool isDeviceBlocked}) = _$_FptrStatus;
+      {required final int operatorID,
+      required final int logicalNumber,
+      final int shiftState,
+      required final String modelName,
+      required final int mode,
+      required final int submode,
+      required final int receiptNumber,
+      required final int documentNumber,
+      required final int shiftNumber,
+      required final int receiptType,
+      required final int documentType,
+      required final int lineLength,
+      required final int lineLengthPix,
+      required final double receiptSum,
+      required final bool isFiscalDevice,
+      required final bool isFiscalFN,
+      required final bool isFNPresent,
+      required final bool isInvalidFN,
+      required final bool isCashDrawerOpened,
+      required final bool isPaperPresent,
+      required final bool isPaperNearEnd,
+      required final bool isCoverOpened,
+      required final bool isPrinterConnectionLost,
+      required final bool isPrinterError,
+      required final bool isCutError,
+      required final bool isPrinterOverheat,
+      required final bool isDeviceBlocked}) = _$_FptrStatus;
 
   factory _FptrStatus.fromJson(Map<String, dynamic> json) =
       _$_FptrStatus.fromJson;
@@ -802,6 +717,6 @@ abstract class _FptrStatus implements FptrStatus {
   bool get isDeviceBlocked => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$FptrStatusCopyWith<_FptrStatus> get copyWith =>
+  _$$_FptrStatusCopyWith<_$_FptrStatus> get copyWith =>
       throw _privateConstructorUsedError;
 }
