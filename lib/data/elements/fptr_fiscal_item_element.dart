@@ -1,6 +1,62 @@
-import 'package:fptr10_service/utils/enum_utils.dart';
-
 import 'fptr_element_enums.dart';
+
+enum FptrImcItemStatus {
+  itemPieceSold,
+  itemDryForSale,
+  itemPieceReturn,
+  itemDryReturn,
+  itemStatusUnchanged,
+}
+
+enum FptrImcType {
+  auto,
+  imcUnrecognized,
+  imcShort,
+  imcFmVerifyCode88,
+  imcVerifyCode44,
+  imcFmVerifyCode44,
+  imcVerifyCode4,
+}
+
+class FptrImcParams {
+  final FptrImcType imcType;
+  final FptrImcItemStatus itemEstimatedStatus;
+  final int imcModeProcessing;
+
+  /// Идентификатор маркированного товара (тег 2101) в base64-представлении
+  final String? imcBarcode;
+  final String? itemFractionalAmount;
+  final num itemQuantity;
+  final FptrMeasurementUnit itemUnits;
+
+  /// base64 представление значения кода маркировки (тег 2000)
+  final String imc;
+  // final itemInfoCheckResult;
+
+  FptrImcParams({
+    required this.imc,
+    required this.itemEstimatedStatus,
+    required this.itemQuantity,
+    required this.itemUnits,
+    this.imcBarcode,
+    this.imcModeProcessing = 0,
+    this.imcType = FptrImcType.auto,
+    this.itemFractionalAmount,
+  });
+
+  Map<String, dynamic> get mapped {
+    return {
+      'imc': imc,
+      'itemEstimatedStatus': itemEstimatedStatus.name,
+      'itemQuantity': itemQuantity,
+      'itemUnits': itemUnits.name,
+      'imcBarcode': imcBarcode,
+      'imcModeProcessing': imcModeProcessing,
+      'imcType': imcType.name,
+      'itemFractionalAmount': itemFractionalAmount,
+    };
+  }
+}
 
 class FptrFiscalItemElement {
   final FptrElementType type = FptrElementType.position;
@@ -14,8 +70,7 @@ class FptrFiscalItemElement {
   final bool piece;
   final FptrPaymentMethod paymentMethod;
   final FptrPaymentObject paymentObject;
-  // TODO: final String nomenclatureCode;
-  // final FptrImcParams imcParams;
+  final FptrImcParams? imcParams;
   // final tax;
   // final agentInfo;
   // final supplierInfo;
@@ -33,34 +88,45 @@ class FptrFiscalItemElement {
 
   FptrFiscalItemElement({
     // required this.type,
+    required this.amount,
+    required this.measurementUnit,
     required this.name,
+    required this.paymentObject,
     required this.price,
     required this.quantity,
-    required this.amount,
-    this.department = 1,
-    this.infoDiscountAmount = 0.0,
-    required this.measurementUnit,
-    this.piece = false,
-    this.paymentMethod = FptrPaymentMethod.fullPrepayment,
-    required this.paymentObject,
     this.additionalAttributePrint = true,
+    this.department = 1,
+    this.imcParams,
+    this.infoDiscountAmount = 0.0,
+    this.paymentMethod = FptrPaymentMethod.fullPrepayment,
+    this.piece = false,
   });
 
   Map<String, dynamic> toMap() {
-    return {
-      'type': EnumUtils.toShortString(type),
+    Map<String, dynamic> basic = {
+      'type': type.name,
       'name': name,
       'price': price,
       'quantity': quantity,
       'amount': amount,
       'department': department,
       'infoDiscountAmount': infoDiscountAmount,
-      'measurementUnit': EnumUtils.toShortString(measurementUnit),
+      'measurementUnit': measurementUnit.name,
       'piece': piece,
-      'paymentMethod': EnumUtils.toShortString(paymentMethod),
-      'paymentObject': EnumUtils.toShortString(paymentObject),
+      'paymentMethod': paymentMethod.name,
+      'paymentObject': paymentObject.name,
       'additionalAttributePrint': additionalAttributePrint,
       // TODO: add other
     };
+
+    // добавляем информацию о маркировке, если она есть
+    if (imcParams != null) {
+      basic = {
+        ...basic,
+        'imcParams': imcParams!.mapped,
+      };
+    }
+
+    return basic;
   }
 }
