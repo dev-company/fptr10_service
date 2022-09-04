@@ -83,6 +83,12 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
       case "close":
         onClose(call, result);
         break;
+      case "openSell":
+        openSell(call, result);
+        break;
+      case "cancelSell":
+        cancelSell(call, result);
+        break;
       default:
         result.notImplemented();
         break;
@@ -90,7 +96,19 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
   }
 
 
+  private void openSell(MethodCall call, Result result){
+    boolean isRefund = Boolean.parseBoolean(call.argument("isRefund")); 
+    boolean electronically = Boolean.parseBoolean(call.argument("electronically"));
+    fptr.setParam(IFptr.LIBFPTR_PARAM_RECEIPT_TYPE, isRefund ? IFptr.LIBFPTR_RT_SELL_RETURN : IFptr.LIBFPTR_RT_SELL);
+    fptr.setParam(IFptr.LIBFPTR_PARAM_RECEIPT_ELECTRONICALLY, electronically);
+    fptr.openReceipt();
+    result.success(true);
+  }
 
+  private void cancelSell(MethodCall call, Result result){
+    fptr.cancelReceipt();
+    result.success(true);
+  }
 
   private  void onValidateJson(MethodCall call, Result result) {
     fptr.setParam(IFptr.LIBFPTR_PARAM_JSON_DATA, call.argument("task").toString());

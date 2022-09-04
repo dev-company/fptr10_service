@@ -26,8 +26,8 @@ class FptrImcParams {
   /// Идентификатор маркированного товара (тег 2101) в base64-представлении
   final String? imcBarcode;
   final String? itemFractionalAmount;
-  final num itemQuantity;
-  final FptrMeasurementUnit itemUnits;
+  final num? itemQuantity;
+  final FptrMeasurementUnit? itemUnits;
 
   /// base64 представление значения кода маркировки (тег 2000)
   final String imc;
@@ -36,8 +36,8 @@ class FptrImcParams {
   FptrImcParams({
     required this.imc,
     required this.itemEstimatedStatus,
-    required this.itemQuantity,
-    required this.itemUnits,
+    this.itemUnits,
+    this.itemQuantity,
     this.imcBarcode,
     this.imcModeProcessing = 0,
     this.imcType = FptrImcType.auto,
@@ -45,16 +45,42 @@ class FptrImcParams {
   });
 
   Map<String, dynamic> get mapped {
-    return {
+    var result = {
       'imc': imc,
       'itemEstimatedStatus': itemEstimatedStatus.name,
-      'itemQuantity': itemQuantity,
-      'itemUnits': itemUnits.name,
-      'imcBarcode': imcBarcode,
       'imcModeProcessing': imcModeProcessing,
       'imcType': imcType.name,
-      'itemFractionalAmount': itemFractionalAmount,
     };
+
+    if (itemUnits != null) {
+      result = {
+        ...result,
+        'itemUnits': itemUnits!.name,
+      };
+    }
+
+    if (itemQuantity != null) {
+      result = {
+        ...result,
+        'itemQuantity': itemQuantity!,
+      };
+    }
+
+    if (imcBarcode != null) {
+      result = {
+        ...result,
+        'imcBarcode': imcBarcode!,
+      };
+    }
+    if ((itemQuantity != null && itemQuantity == 0) ||
+        itemFractionalAmount != null) {
+      result = {
+        ...result,
+        'itemFractionalAmount': itemFractionalAmount!,
+      };
+    }
+
+    return result;
   }
 }
 
@@ -66,7 +92,7 @@ class FptrFiscalItemElement {
   final double amount;
   final int department;
   final double infoDiscountAmount;
-  final FptrMeasurementUnit measurementUnit;
+  final FptrMeasurementUnit? measurementUnit;
   final bool piece;
   final FptrPaymentMethod paymentMethod;
   final FptrPaymentObject paymentObject;
@@ -89,12 +115,12 @@ class FptrFiscalItemElement {
   FptrFiscalItemElement({
     // required this.type,
     required this.amount,
-    required this.measurementUnit,
     required this.name,
     required this.paymentObject,
     required this.price,
     required this.quantity,
     this.additionalAttributePrint = true,
+    this.measurementUnit,
     this.department = 1,
     this.imcParams,
     this.infoDiscountAmount = 0.0,
@@ -111,13 +137,20 @@ class FptrFiscalItemElement {
       'amount': amount,
       'department': department,
       'infoDiscountAmount': infoDiscountAmount,
-      'measurementUnit': measurementUnit.name,
       'piece': piece,
       'paymentMethod': paymentMethod.name,
       'paymentObject': paymentObject.name,
       'additionalAttributePrint': additionalAttributePrint,
       // TODO: add other
     };
+
+    // добавляет информацию о ед. изм
+    if (measurementUnit != null) {
+      basic = {
+        ...basic,
+        'measurementUnit': measurementUnit!.name,
+      };
+    }
 
     // добавляем информацию о маркировке, если она есть
     if (imcParams != null) {

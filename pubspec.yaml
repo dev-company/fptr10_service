@@ -1,6 +1,6 @@
 name: fptr10_service
 description: unofficial ATOL plugin based on 10.9.3.1
-version: 0.3.1
+version: 0.3.2
 homepage: https://github.com/dev-company/fptr10_service
 
 environment:

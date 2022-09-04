@@ -65,6 +65,18 @@ class Fptr10Service {
     }
   }
 
+  static Future<void> openSell({
+    required bool electronically,
+    required bool isRefund,
+  }) async =>
+      await channel.invokeMethod('openSell', <String, dynamic>{
+        'electronically': electronically,
+        'isRefund': isRefund,
+      });
+
+  static Future<void> cancelSell() async =>
+      await channel.invokeMethod('cancelSell');
+
   // event
   static const EventChannel statusChannel =
       EventChannel('company.dev/fptr10_events/status');
