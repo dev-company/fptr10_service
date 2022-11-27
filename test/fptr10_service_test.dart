@@ -9,7 +9,7 @@ void main() {
 
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '10.9.3.1';
+      return '10.9.4.0';
     });
   });
 
@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getDriverVersion', () async {
-    expect(await Fptr10Service.driverVersion, '10.9.3.1');
+    expect(await Fptr10Service.driverVersion, '10.9.4.0');
   });
 }
