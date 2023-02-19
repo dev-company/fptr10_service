@@ -11,35 +11,43 @@ import 'fptr10_service.dart';
 class Fptr10ServiceTasks extends Fptr10Service {
   static const String PERFORM_JSON = 'performJson';
 
-  static Future<void> sendTask(Map<String, dynamic> task) async {
+  static Future<void> sendTask(
+    Map<String, dynamic> task,
+  ) async {
     try {
-      final String taskString = json.encode(task);
+      final String jsonTask = jsonEncode(task);
+      final result = await Fptr10Service.channel
+          .invokeMethod(PERFORM_JSON, {'task': jsonTask});
 
-      String result = await Fptr10Service.channel.invokeMethod(PERFORM_JSON, {'task': taskString});
-
-      debugPrint(result);
+      debugPrint(result as String);
     } on PlatformException catch (e) {
       throw Fptr10Exception(e.code, e.message);
     }
   }
 
-  static Future<String> sendTaskWithResponse(Map<String, dynamic> task) async {
-    final String taskString = json.encode(task).toString();
+  static Future<String> sendTaskWithResponse(
+    Map<String, dynamic> task,
+  ) async {
     try {
-      String result = await Fptr10Service.channel.invokeMethod(PERFORM_JSON, {'task': taskString});
+      final String jsonTask = jsonEncode(task);
+      final result = await Fptr10Service.channel
+          .invokeMethod(PERFORM_JSON, {'task': jsonTask});
 
-      return result;
+      return result as String;
     } on PlatformException catch (e) {
       throw Fptr10Exception(e.code, e.message);
     }
   }
 
-  static Future<dynamic> sendTaskWithParsedResponse(Map<String, dynamic> task) async {
-    final String taskString = json.encode(task).toString();
+  static Future<dynamic> sendTaskWithParsedResponse(
+    Map<String, dynamic> task,
+  ) async {
     try {
-      dynamic resultString = await Fptr10Service.channel.invokeMethod(PERFORM_JSON, {'task': taskString});
+      final String jsonTask = jsonEncode(task);
+      final resultString = await Fptr10Service.channel
+          .invokeMethod(PERFORM_JSON, {'task': jsonTask});
 
-      dynamic result = json.decode(resultString);
+      dynamic result = jsonDecode(resultString as String);
 
       return result;
     } on PlatformException catch (e) {
