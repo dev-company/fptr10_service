@@ -124,8 +124,8 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
   private void onGetSettings(MethodCall call, Result result) {
     String settings = fptr.getSettings();
     if (settings == null) {
-     result.error(SETTINGS_GET_ERROR, fptr.errorDescription(), null);
-     return;
+      result.error("SETTINGS_GET_ERROR", fptr.errorDescription(), null);
+      return;
     }
 
     result.success(settings);
@@ -157,15 +157,21 @@ public class Fptr10ServicePlugin implements  MethodCallHandler, FlutterPlugin {
   }
 
   private void onPerformJson(MethodCall call, Result result) {
-    String task = call.argument("task").toString();
-    fptr.setParam(IFptr.LIBFPTR_PARAM_JSON_DATA, task);
-    int responseCode = fptr.processJson();
-  
-    if(responseCode != 0) {
-      result.error(String.format("%s",responseCode), fptr.errorDescription(), null);
-    } else {
-      String jsonData = fptr.getParamString(IFptr.LIBFPTR_PARAM_JSON_DATA);
-      result.success(jsonData);
+    try {
+      Map<String, String> arguments = call.arguments(); 
+      String taskJson = arguments.get("task");
+
+      fptr.setParam(IFptr.LIBFPTR_PARAM_JSON_DATA, taskJson);
+      int responseCode = fptr.processJson();
+      
+      if (responseCode != 0) {
+        result.error(String.valueOf(responseCode), fptr.errorDescription(), null);
+      } else {
+        String jsonData = fptr.getParamString(IFptr.LIBFPTR_PARAM_JSON_DATA);
+        result.success(jsonData);
+      }
+    } catch (Exception e) {
+      result.error("JSON_PERFORM_ERROR", e.getMessage(), null);
     }
   }
 
